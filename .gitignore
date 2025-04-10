@@ -1,0 +1,27 @@
+# Ambiente virtual (não vai pro GitHub)
+venv/
+ENV/
+env/
+
+# Arquivos do Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Arquivos de logs ou banco temporário
+*.log
+*.sqlite3
+
+# Configurações do VSCode (se usar)
+.vscode/
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos de backup
+*.bak
+*.swp
+
+# Arquivos de credenciais ou segredos (se usar futuramente)
+.env
