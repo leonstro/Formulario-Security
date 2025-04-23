@@ -1,8 +1,7 @@
-FROM python:3.10-slim
+FROM python:3.10-slim-buster
 WORKDIR /app
-COPY requirements.txt /app/
-RUN python3 -m venv venv
-RUN ./venv/bin/pip install -r requirements.txt
-COPY backend/ /app/
+COPY backend/requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+COPY backend/ .
 EXPOSE 5000
-CMD ["./venv/bin/python", "app.py"]
+CMD ["python", "app.py"]

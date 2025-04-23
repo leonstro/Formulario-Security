@@ -1,10 +1,12 @@
 from flask import Flask, request, jsonify
 from auth import gerar_token, validar_token
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)
 usuarios = {}
 
-# IAM simulado: chave secreta
 CHAVE_IAM = "123456"
 
 @app.route("/cadastrar", methods=["POST"])
@@ -14,7 +16,7 @@ def cadastrar():
     email = dados.get("email", "").strip()
     senha = dados.get("senha", "")
 
-    # Validações do servidor
+    
     if len(nome) < 3:
         return jsonify({"message": "Nome deve ter pelo menos 3 caracteres."}), 400
 
@@ -34,12 +36,12 @@ def cadastrar():
 
 @app.route("/acesso-restrito", methods=["GET"])
 def acesso():
-    # Verifica o token JWT
+    
     token = request.headers.get("Authorization", "").replace("Bearer ", "")
     if validar_token(token):
         return jsonify({"message": "Acesso autorizado via JWT."}), 200
 
-    # Verifica a chave de API (IAM simulado)
+    
     api_key = request.headers.get("x-api-key", "")
     if api_key == CHAVE_IAM:
         return jsonify({"message": "Acesso autorizado via IAM."}), 200
@@ -47,4 +49,4 @@ def acesso():
     return jsonify({"message": "Acesso negado. Token ou chave inválida."}), 403
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5050)
