@@ -4,6 +4,9 @@ from auth import gerar_token, validar_token
 app = Flask(__name__)
 usuarios = {}
 
+# IAM simulado: chave secreta
+CHAVE_IAM = "123456"
+
 @app.route("/cadastrar", methods=["POST"])
 def cadastrar():
     dados = request.get_json()
@@ -31,10 +34,17 @@ def cadastrar():
 
 @app.route("/acesso-restrito", methods=["GET"])
 def acesso():
+    # Verifica o token JWT
     token = request.headers.get("Authorization", "").replace("Bearer ", "")
     if validar_token(token):
         return jsonify({"message": "Acesso autorizado via JWT."}), 200
-    return jsonify({"message": "Token inválido."}), 403
+
+    # Verifica a chave de API (IAM simulado)
+    api_key = request.headers.get("x-api-key", "")
+    if api_key == CHAVE_IAM:
+        return jsonify({"message": "Acesso autorizado via IAM."}), 200
+
+    return jsonify({"message": "Acesso negado. Token ou chave inválida."}), 403
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

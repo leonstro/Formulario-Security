@@ -31,4 +31,3 @@ document.getElementById("formulario").addEventListener("submit", async function(
     const data = await response.json();
     document.getElementById("mensagem").innerText = data.message;
   });
-  

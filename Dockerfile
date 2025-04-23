@@ -1,9 +1,8 @@
 FROM python:3.10-slim
-
 WORKDIR /app
-COPY backend/ /app
-
-RUN pip install flask pyjwt
-
+COPY requirements.txt /app/
+RUN python3 -m venv venv
+RUN ./venv/bin/pip install -r requirements.txt
+COPY backend/ /app/
 EXPOSE 5000
-CMD ["python", "app.py"]
+CMD ["./venv/bin/python", "app.py"]
