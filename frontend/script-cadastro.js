@@ -5,6 +5,7 @@ document.getElementById("formulario").addEventListener("submit", async function(
   const email = document.getElementById("email").value.trim();
   const senha = document.getElementById("senha").value;
 
+  
   if (nome.length < 3) {
     alert("Nome deve ter pelo menos 3 caracteres.");
     return;
@@ -22,6 +23,7 @@ document.getElementById("formulario").addEventListener("submit", async function(
     return;
   }
 
+  
   const response = await fetch("http://localhost:5050/cadastrar", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -31,10 +33,13 @@ document.getElementById("formulario").addEventListener("submit", async function(
   const data = await response.json();
   document.getElementById("mensagem").innerText = data.message;
 
+  
   if (response.ok) {
+    
     localStorage.setItem("token", data.token);
     setTimeout(() => {
+      
       window.location.href = "login.html";
-    }, 1500);
+    }, 1500); 
   }
 });

@@ -4,7 +4,7 @@ from flask_cors import CORS
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app)  
 usuarios = {}
 
 CHAVE_IAM = "123456"
@@ -16,7 +16,6 @@ def cadastrar():
     email = dados.get("email", "").strip()
     senha = dados.get("senha", "")
 
-    
     if len(nome) < 3:
         return jsonify({"message": "Nome deve ter pelo menos 3 caracteres."}), 400
 
@@ -25,13 +24,14 @@ def cadastrar():
         return jsonify({"message": "E-mail inválido."}), 400
 
     if not re.match(r"^(?=.*[A-Z])(?=.*\d).{8,}$", senha):
-        return jsonify({"message": "Senha fraca."}), 400
+        return jsonify({"message": "Senha precisa ter no mínimo 8 caracteres, incluindo uma letra maiúscula e um número."}), 400
 
     if email in usuarios:
         return jsonify({"message": "Usuário já cadastrado."}), 400
 
     token = gerar_token(email)
     usuarios[email] = {"nome": nome, "senha": senha, "token": token}
+
     return jsonify({"message": "Cadastro realizado com sucesso!", "token": token}), 200
 
 @app.route("/acesso-restrito", methods=["GET"])
@@ -41,7 +41,6 @@ def acesso():
     if validar_token(token):
         return jsonify({"message": "Acesso autorizado via JWT."}), 200
 
-    
     api_key = request.headers.get("x-api-key", "")
     if api_key == CHAVE_IAM:
         return jsonify({"message": "Acesso autorizado via IAM."}), 200
